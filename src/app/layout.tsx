@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { SuiProvider } from '@/components/sui-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'WheatChain Landing Page',
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <SuiProvider>
           {children}
+          <Toaster />
         </SuiProvider>
       </body>
     </html>

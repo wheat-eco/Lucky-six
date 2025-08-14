@@ -1,12 +1,13 @@
 import { Countdown } from "@/components/countdown";
 import { ParticleBackground } from "@/components/particle-background";
-import { Waitlist } from "@/components/waitlist";
+import { WaitlistFlow } from "@/components/waitlist-flow";
+import { WaitlistCounter } from "@/components/waitlist-counter";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background flex flex-col items-center text-primary-foreground">
+    <div className="relative min-h-screen w-full overflow-hidden bg-background flex flex-col items-center justify-center text-primary-foreground">
       <ParticleBackground />
-      <div className="relative z-10 flex flex-col items-center justify-center text-center p-4 h-screen w-full">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center p-4 h-full w-full pt-20">
         <main className="flex flex-col items-center gap-6">
           <div
             className="flex flex-col items-center gap-4 text-center"
@@ -23,8 +24,12 @@ export default function Home() {
              <Countdown />
           </div>
 
+          <div className="animate-in fade-in slide-in-from-bottom-12 duration-700 delay-500">
+            <WaitlistCounter />
+          </div>
+
           <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-12 duration-700 delay-600">
-            <Waitlist />
+            <WaitlistFlow />
           </div>
         </main>
       </div>

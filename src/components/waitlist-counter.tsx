@@ -1,0 +1,33 @@
+"use client";
+
+import { useEffect, useState } from 'react';
+import { getWaitlistCount } from '@/lib/firestore';
+import { Rocket } from 'lucide-react';
+
+export function WaitlistCounter() {
+  const [count, setCount] = useState(190000);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const initialCount = await getWaitlistCount();
+      setCount(initialCount);
+    };
+    fetchCount();
+
+    // Fake real-time updates for visual effect
+    const interval = setInterval(() => {
+      setCount(prevCount => prevCount + Math.floor(Math.random() * 3) + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+  
+  return (
+    <div className="flex items-center justify-center gap-3 text-amber-300 font-headline">
+        <Rocket className="h-6 w-6" />
+        <span className="text-lg md:text-xl font-bold tracking-wider">
+            {new Intl.NumberFormat('en-US').format(count)}+ Wallets Joined
+        </span>
+    </div>
+  );
+}
