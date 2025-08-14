@@ -4,8 +4,9 @@
 import { useEffect, useState } from 'react';
 import { useWallets, useConnectWallet, useCurrentAccount } from "@mysten/dapp-kit";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle } from "lucide-react";
+import CircularProgress from '@mui/material/CircularProgress';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Button } from "@/components/ui/button"; // Assuming this is a local component, not MUI Button
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 
 function CustomWalletModal({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void; }) {
@@ -31,7 +32,7 @@ function CustomWalletModal({ open, onOpenChange }: { open: boolean; onOpenChange
                 >
                     <img src={wallet.icon} alt={wallet.name} className="w-7 h-7 md:w-8 md:h-8 rounded-full" />
                     <span className="font-bold text-base md:text-lg text-white">{wallet.name}</span>
-                    {isPending && <Loader2 className="h-5 w-5 animate-spin ml-auto text-amber-300" />}
+                    {isPending && <CircularProgress size={20} className="ml-auto text-amber-300" />}
                 </button>
                 </li>
             ))}
@@ -74,7 +75,7 @@ export function ConnectWalletStep({ onConnected }: { onConnected: () => void }) 
             </Card>
         ) : (
              <div className="flex flex-col items-center gap-4 text-center animate-in fade-in duration-500">
-                <CheckCircle className="h-12 w-12 md:h-16 md:w-16 text-green-400" />
+                <CheckCircleIcon sx={{ fontSize: { xs: 48, md: 64 } }} className="text-green-400" />
                 <h3 className="text-xl md:text-2xl font-bold text-white font-headline">Wallet Connected!</h3>
                 <p className="text-muted-foreground max-w-xs break-all text-sm md:text-base">
                     {account.address}

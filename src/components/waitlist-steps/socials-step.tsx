@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, CheckCircle, ArrowRight } from 'lucide-react';
-import { X as XIcon, Send } from 'lucide-react';
 import Link from 'next/link';
+import MuiXIcon from '@mui/icons-material/X';
+import TelegramIcon from '@mui/icons-material/Telegram';
 
 interface SocialsStepProps {
   onCompleted: () => void;
@@ -59,7 +60,7 @@ export function SocialsStep({ onCompleted, setFormData }: SocialsStepProps) {
         <div className="pl-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
             <Link href="https://x.com/wheatchain_xyz" target="_blank" onClick={() => handleVerification('x')} className="flex-shrink-0">
                 <Button type="button" variant="outline" className="border-sky-400 text-sky-400 hover:bg-sky-400 hover:text-black">
-                    <XIcon className="mr-2 h-4 w-4" />
+                    <MuiXIcon className="mr-2 h-4 w-4" />
                     Follow @wheatchain_xyz
                 </Button>
             </Link>
@@ -91,7 +92,7 @@ export function SocialsStep({ onCompleted, setFormData }: SocialsStepProps) {
         <div className="pl-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
              <Link href="https://t.me/swhit_tgchat" target="_blank" onClick={() => handleVerification('tg')} className="flex-shrink-0">
                 <Button type="button" variant="outline" className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
-                    <Send className="mr-2 h-4 w-4" />
+                    <TelegramIcon className="mr-2 h-4 w-4" />
                     Join Community
                 </Button>
             </Link>

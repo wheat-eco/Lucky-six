@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Share2, CheckCircle } from "lucide-react";
+import ShareIcon from '@mui/icons-material/Share';
+import CircularProgress from '@mui/material/CircularProgress';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useToast } from "@/hooks/use-toast";
 import { addToWaitlist, WaitlistData } from "@/lib/firestore";
 import { useCurrentAccount } from "@mysten/dapp-kit";
@@ -84,7 +87,7 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
             </div>
             <Button type="button" onClick={handleShare} variant="outline" className="border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black">
                 <Share2 className="mr-2 h-4 w-4" />
-                Create Post
+                <ShareIcon sx={{ mr: 1, fontSize: 16 }} /> Create Post
             </Button>
         </div>
 
@@ -103,7 +106,7 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
 
         <div className="flex justify-end pt-2">
             <Button type="submit" disabled={isSubmitting} size="lg" className="bg-amber-400 hover:bg-amber-500 text-black font-bold text-sm md:text-base">
-                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle className="mr-2 h-4 w-4" />}
+                {isSubmitting ? <CircularProgress size={16} color="inherit" sx={{ mr: 1 }} /> : <CheckCircleOutlineIcon sx={{ mr: 1, fontSize: 16 }} />}
                 Confirm & Finish
             </Button>
         </div>

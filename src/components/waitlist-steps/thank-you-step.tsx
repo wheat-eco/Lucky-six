@@ -1,5 +1,7 @@
 "use client";
 
+import TwitterIcon from '@mui/icons-material/Twitter';
+import TelegramIcon from '@mui/icons-material/Telegram';
 import { CheckCircle, Twitter, Send } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
@@ -17,13 +19,13 @@ export function ThankYouStep() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href="https://x.com/wheatchain_xyz" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" size="lg" className="border-sky-400 text-sky-400 hover:bg-sky-400 hover:text-black w-48 justify-center">
-                    <Twitter className="mr-2 h-5 w-5" />
+                    <TwitterIcon className="mr-2 h-5 w-5" />
                     X / Twitter
                 </Button>
             </Link>
             <Link href="https://t.me/swhit_tgchat" target="_blank" rel="noopener noreferrer">
                  <Button variant="outline" size="lg" className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white w-48 justify-center">
-                    <Send className="mr-2 h-5 w-5" />
+                    <TelegramIcon className="mr-2 h-5 w-5" />
                     Telegram
                 </Button>
             </Link>
