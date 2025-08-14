@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label"; // Keep Label
 import { Loader2, Share2, CheckCircle } from "lucide-react";
 import ShareIcon from '@mui/icons-material/Share';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -85,11 +85,13 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
 
       const result = await res.json();
       if (result.success) {
-          toast({
-              title: "Post Submitted!",
-              description: "Your final step is complete.",
-              variant: "default",
-          });
+          // Only show toast on success
+ toast({
+ title: "Post Submitted!",
+ description: "Your final step is complete.",
+ variant: "default",
+ });
+          // Proceed to the next step only on success
           onCompleted();
       } else {
           setError(result.error ?? '');
@@ -114,7 +116,6 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
                 {tweetText.split('\n').map((line, i) => <p key={i}>{line}</p>)}
             </div>
             <Button type="button" onClick={handleShare} variant="outline" className="border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black">
-                <Share2 className="mr-2 h-4 w-4" />
                 <ShareIcon sx={{ mr: 1, fontSize: 16 }} /> Create Post
  </Button>
  </div>
