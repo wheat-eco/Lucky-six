@@ -1,5 +1,6 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
+import { SuiProvider } from '@/components/sui-provider';
 
 export const metadata: Metadata = {
   title: 'WheatChain Landing Page',
@@ -18,7 +19,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&family=Orbitron:wght@400;700;800;900&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <SuiProvider>
+          {children}
+        </SuiProvider>
+      </body>
     </html>
   );
 }
