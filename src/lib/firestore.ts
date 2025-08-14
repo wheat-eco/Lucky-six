@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import { collection, getDocs, addDoc, query, where,getCountFromServer } from 'firebase/firestore';
+import { collection, getDocs, addDoc, query, where, getCountFromServer } from 'firebase/firestore';
 
 export interface WaitlistData {
   suiAddress: string;
@@ -43,6 +43,7 @@ export async function addToWaitlist(data: WaitlistData): Promise<{ success: bool
     return { success: true };
   } catch (error) {
     console.error("Error adding to waitlist:", error);
-    return { success: false, error: "An error occurred while joining the waitlist." };
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+    return { success: false, error: `An error occurred while joining the waitlist: ${errorMessage}` };
   }
 }

@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Share2, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { addToWaitlist, WaitlistData } from "@/lib/firestore";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 interface ShareStepProps {
     onCompleted: () => void;
@@ -13,11 +15,12 @@ interface ShareStepProps {
     setFormData: React.Dispatch<React.SetStateAction<{ xUsername: string; tweetUrl: string; }>>;
 }
 
-export function ShareStep({ onCompleted, xUsername, setFormData }: ShareStepProps) {
+export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
   const [tweetUrl, setTweetUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const { toast } = useToast();
+  const account = useCurrentAccount();
 
   const tweetText = `Joining the @wheatchain_xyz waitlist! Get ready for a new era of decentralized strategy on #Sui.
 
@@ -28,43 +31,55 @@ export function ShareStep({ onCompleted, xUsername, setFormData }: ShareStepProp
       window.open(url, '_blank');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!tweetUrl.match(/^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/status\/[0-9]+(\?.*)?$/)) {
           setError("Please enter a valid X/Twitter post URL.");
           return;
       }
+      if (!account) {
+          setError("Wallet not connected. Please go back and connect.");
+          return;
+      }
+
       setError('');
       setIsSubmitting(true);
+      
+      const waitlistData: WaitlistData = {
+          suiAddress: account.address,
+          xUsername,
+          tweetUrl,
+      };
 
-      setFormData(prev => ({ ...prev, tweetUrl }));
+      const result = await addToWaitlist(waitlistData);
 
-      // Simulate submission
-      setTimeout(() => {
-          setIsSubmitting(false);
+      if (result.success) {
           toast({
               title: "Post Submitted!",
               description: "Your final step is complete.",
               variant: "default",
           });
           onCompleted();
-      }, 1500);
+      } else {
+          setError(result.error || "An unknown error occurred.");
+      }
+      setIsSubmitting(false);
   };
     
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 text-left">
+    <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 text-left">
         <div className="space-y-3">
-            <Label className="text-lg flex items-center gap-2 font-semibold text-white">
-                <span className="flex items-center justify-center bg-amber-400 text-black rounded-full h-6 w-6 text-sm">3</span>
+            <Label className="text-base md:text-lg flex items-center gap-2 font-semibold text-white">
+                <span className="flex items-center justify-center bg-amber-400 text-black rounded-full h-6 w-6 text-sm flex-shrink-0">3</span>
                 Share on X
             </Label>
-            <p className="text-muted-foreground pl-8">
+            <p className="text-muted-foreground pl-8 text-sm md:text-base">
                 Create a post on X with the following template and submit the URL.
             </p>
         </div>
         
         <div className="pl-8 space-y-4">
-             <div className="p-4 rounded-md bg-black/30 border border-white/20 text-sm text-gray-300 italic">
+             <div className="p-3 md:p-4 rounded-md bg-black/30 border border-white/20 text-xs md:text-sm text-gray-300 italic">
                 {tweetText.split('\n').map((line, i) => <p key={i}>{line}</p>)}
             </div>
             <Button type="button" onClick={handleShare} variant="outline" className="border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black">
@@ -83,11 +98,11 @@ export function ShareStep({ onCompleted, xUsername, setFormData }: ShareStepProp
                 required
                 className="bg-background/50 border-white/20 focus:ring-amber-400"
             />
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
         </div>
 
-        <div className="flex justify-end">
-            <Button type="submit" disabled={isSubmitting} size="lg" className="bg-amber-400 hover:bg-amber-500 text-black font-bold">
+        <div className="flex justify-end pt-2">
+            <Button type="submit" disabled={isSubmitting} size="lg" className="bg-amber-400 hover:bg-amber-500 text-black font-bold text-sm md:text-base">
                 {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle className="mr-2 h-4 w-4" />}
                 Confirm & Finish
             </Button>

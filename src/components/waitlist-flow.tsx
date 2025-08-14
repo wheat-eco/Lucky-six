@@ -57,30 +57,30 @@ export function WaitlistFlow() {
     <>
       <Button
         onClick={() => setIsOpen(true)}
-        className="w-full bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-primary-foreground font-bold shadow-lg shadow-amber-500/30 transition-all hover:shadow-xl hover:shadow-amber-500/40 transform hover:-translate-y-1 text-lg px-8 py-6"
+        className="w-full bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-primary-foreground font-bold shadow-lg shadow-amber-500/30 transition-all hover:shadow-xl hover:shadow-amber-500/40 transform hover:-translate-y-1 text-base md:text-lg px-6 py-5 md:px-8 md:py-6"
       >
         Join Waitlist
       </Button>
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="bg-background/80 backdrop-blur-sm border-white/20 text-primary-foreground max-w-2xl p-8">
+        <DialogContent className="bg-background/80 backdrop-blur-sm border-white/20 text-primary-foreground w-[95vw] max-w-2xl rounded-lg p-4 md:p-8">
             <DialogHeader>
-                <DialogTitle className="text-3xl font-headline text-amber-300 mb-2">
+                <DialogTitle className="text-2xl md:text-3xl font-headline text-amber-300 mb-2">
                     {step !== 'thanks' ? "Join the Waitlist" : "Welcome Aboard!"}
                 </DialogTitle>
-                <DialogDescription className="text-muted-foreground text-base">
+                <DialogDescription className="text-sm md:text-base text-muted-foreground">
                    {step !== 'thanks' ? "Complete the following steps to secure your spot." : "You're officially on the waitlist. See you at launch!"}
                 </DialogDescription>
             </DialogHeader>
 
             {step !== 'thanks' && (
-                <div className="my-6">
+                <div className="my-4 md:my-6">
                     <Progress value={(stepNumber[step] / TOTAL_STEPS) * 100} className="w-full h-2 bg-black/30" indicatorClassName="bg-gradient-to-r from-amber-400 to-yellow-500 shadow-[0_0_8px_theme(colors.amber.400)]" />
                     <p className="text-right text-xs text-muted-foreground mt-2">Step {stepNumber[step]} of {TOTAL_STEPS}</p>
                 </div>
             )}
             
-            <div className="mt-4 min-h-[350px] animate-in fade-in-50 duration-500">
+            <div className="mt-4 min-h-[300px] md:min-h-[350px] animate-in fade-in-50 duration-500">
                 {step === "connect" && <ConnectWalletStep onConnected={nextStep} />}
                 {step === "socials" && <SocialsStep onCompleted={nextStep} setFormData={setFormData} />}
                 {step === "share" && <ShareStep onCompleted={nextStep} xUsername={formData.xUsername} setFormData={setFormData} />}

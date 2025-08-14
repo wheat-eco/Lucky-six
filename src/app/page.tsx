@@ -15,7 +15,7 @@ export default function Home() {
             <h1 className="text-5xl md:text-8xl font-extrabold font-headline tracking-tighter text-amber-300 animate-in fade-in slide-in-from-bottom-12 duration-700">
               WheatChain
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground font-headline max-w-xl animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200">
+            <p className="text-lg md:text-2xl text-muted-foreground font-headline max-w-md md:max-w-xl animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200">
               The Game Begins Soon. Prepare for a new era of decentralized strategy.
             </p>
           </div>

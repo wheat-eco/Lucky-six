@@ -62,13 +62,13 @@ export function Countdown() {
   ];
 
   return (
-    <div className="flex items-center justify-center gap-4 md:gap-8 my-8 md:my-10">
+    <div className="flex items-center justify-center gap-2 md:gap-4 my-8">
       {timeUnits.map((unit) => (
-        <div key={unit.label} className="flex flex-col items-center justify-center rounded-lg bg-black/20 p-3 md:p-5 w-[70px] md:w-[100px] border border-white/10 shadow-lg">
-          <div className="text-3xl md:text-6xl font-headline font-normal text-amber-300 tracking-tighter">
+        <div key={unit.label} className="flex flex-col items-center justify-center rounded-lg bg-black/20 p-2 md:p-5 w-[65px] md:w-[100px] border border-white/10 shadow-lg">
+          <div className="text-2xl md:text-6xl font-headline font-normal text-amber-300 tracking-tighter">
             {String(unit.value).padStart(2, '0')}
           </div>
-          <div className="text-xs md:text-sm font-body text-muted-foreground uppercase tracking-widest">
+          <div className="text-[10px] md:text-sm font-body text-muted-foreground uppercase tracking-widest">
             {unit.label}
           </div>
         </div>

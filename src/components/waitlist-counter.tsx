@@ -23,9 +23,9 @@ export function WaitlistCounter() {
   }, []);
   
   return (
-    <div className="flex items-center justify-center gap-3 text-amber-300 font-headline">
-        <Rocket className="h-6 w-6" />
-        <span className="text-lg md:text-xl font-bold tracking-wider">
+    <div className="flex items-center justify-center gap-2 md:gap-3 text-amber-300 font-headline">
+        <Rocket className="h-5 w-5 md:h-6 md:w-6" />
+        <span className="text-base md:text-xl font-bold tracking-wider">
             {new Intl.NumberFormat('en-US').format(count)}+ Wallets Joined
         </span>
     </div>
