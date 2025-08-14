@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useWallet, ConnectButton } from "@mysten/dapp-kit";
+import { useState, useEffect } from "react";
+import { useWallets, ConnectButton } from "@mysten/dapp-kit";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,17 +13,12 @@ import Link from "next/link";
 type Step = "connect" | "details" | "thanks";
 
 export function Waitlist() {
-  const { currentAccount } = useWallet();
+  const wallets = useWallets();
+  const currentAccount = wallets.find(wallet => wallet.isConnected)?.accounts[0];
   const [step, setStep] = useState<Step>("connect");
   const [xUsername, setXUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleConnect = () => {
-    // The ConnectButton from dapp-kit handles the connection flow.
-    // We move to the next step once the wallet is connected.
-    // This is handled by the effect below.
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,25 +47,14 @@ export function Waitlist() {
     }
   };
 
-  // Effect to move to the next step once wallet is connected
-  useState(() => {
-    if (currentAccount) {
-      setStep("details");
-    } else {
-      setStep("connect");
-    }
-  });
-  
-  // A second effect is needed here to properly handle state transitions
-  // when the user connects or disconnects their wallet.
-  useState(() => {
+  useEffect(() => {
     if (currentAccount && step === 'connect') {
         setStep('details');
     }
     if (!currentAccount && step !== 'connect') {
         setStep('connect');
     }
-  });
+  }, [currentAccount, step]);
 
   return (
     <Card className="bg-black/20 border-white/10 shadow-lg text-primary-foreground">

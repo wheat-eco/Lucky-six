@@ -1,14 +1,28 @@
 import * as admin from 'firebase-admin';
 
+const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+
 if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(
-    process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
-  );
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
+  if (!serviceAccountKey) {
+    console.error('Firebase Admin SDK initialization error: FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not set.');
+  } else {
+    try {
+      const serviceAccount = JSON.parse(serviceAccountKey);
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+    } catch (error) {
+      console.error('Error parsing FIREBASE_SERVICE_ACCOUNT_KEY:', error);
+    }
+  }
 }
 
-const db = admin.firestore();
+let db;
+try {
+  db = admin.firestore();
+} catch (error) {
+  console.error("Could not initialize Firestore. Did you set up your environment variables correctly?", error);
+}
+
 
 export { db, admin };
