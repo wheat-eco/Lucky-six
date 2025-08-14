@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -62,7 +63,7 @@ export function WaitlistFlow() {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="bg-background/80 backdrop-blur-sm border-white/20 text-primary-foreground max-w-lg p-8">
+        <DialogContent className="bg-background/80 backdrop-blur-sm border-white/20 text-primary-foreground max-w-2xl p-8">
             <DialogHeader>
                 <DialogTitle className="text-3xl font-headline text-amber-300 mb-2">
                     {step !== 'thanks' ? "Join the Waitlist" : "Welcome Aboard!"}
@@ -73,13 +74,13 @@ export function WaitlistFlow() {
             </DialogHeader>
 
             {step !== 'thanks' && (
-                <div className="my-4">
-                    <Progress value={(stepNumber[step] / TOTAL_STEPS) * 100} className="w-full h-2 bg-black/30" indicatorClassName="bg-amber-400" />
-                    <p className="text-right text-xs text-muted-foreground mt-1">Step {stepNumber[step]} of {TOTAL_STEPS}</p>
+                <div className="my-6">
+                    <Progress value={(stepNumber[step] / TOTAL_STEPS) * 100} className="w-full h-2 bg-black/30" indicatorClassName="bg-gradient-to-r from-amber-400 to-yellow-500 shadow-[0_0_8px_theme(colors.amber.400)]" />
+                    <p className="text-right text-xs text-muted-foreground mt-2">Step {stepNumber[step]} of {TOTAL_STEPS}</p>
                 </div>
             )}
             
-            <div className="mt-4">
+            <div className="mt-4 min-h-[350px] animate-in fade-in-50 duration-500">
                 {step === "connect" && <ConnectWalletStep onConnected={nextStep} />}
                 {step === "socials" && <SocialsStep onCompleted={nextStep} setFormData={setFormData} />}
                 {step === "share" && <ShareStep onCompleted={nextStep} xUsername={formData.xUsername} setFormData={setFormData} />}

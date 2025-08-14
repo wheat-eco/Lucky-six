@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -17,23 +18,25 @@ function CustomWalletModal({ open, onOpenChange }: { open: boolean; onOpenChange
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-background/80 backdrop-blur-sm border-white/20 text-primary-foreground">
         <DialogHeader>
-          <DialogTitle className="text-amber-300">Select a Wallet</DialogTitle>
+          <DialogTitle className="text-amber-300 text-2xl font-headline">Select a Wallet</DialogTitle>
         </DialogHeader>
-        <ul className="space-y-2">
-          {wallets.map((wallet) => (
-            <li key={wallet.name}>
-              <button
-                disabled={isPending}
-                className="w-full text-left rounded-lg p-3 bg-black/20 hover:bg-black/40 transition-colors flex items-center gap-4 disabled:opacity-50"
-                onClick={() => connect({ wallet })}
-              >
-                <img src={wallet.icon} alt={wallet.name} className="w-8 h-8 rounded-full" />
-                <span className="font-bold">{wallet.name}</span>
-                {isPending && <Loader2 className="h-5 w-5 animate-spin ml-auto" />}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="py-4">
+            <ul className="space-y-3">
+            {wallets.map((wallet) => (
+                <li key={wallet.name}>
+                <button
+                    disabled={isPending}
+                    className="w-full text-left rounded-lg p-4 bg-black/20 hover:bg-black/40 transition-colors flex items-center gap-4 disabled:opacity-50"
+                    onClick={() => connect({ wallet })}
+                >
+                    <img src={wallet.icon} alt={wallet.name} className="w-8 h-8 rounded-full" />
+                    <span className="font-bold text-lg text-white">{wallet.name}</span>
+                    {isPending && <Loader2 className="h-5 w-5 animate-spin ml-auto text-amber-300" />}
+                </button>
+                </li>
+            ))}
+            </ul>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -53,22 +56,26 @@ export function ConnectWalletStep({ onConnected }: { onConnected: () => void }) 
   }, [account, onConnected]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center p-4 min-h-[200px]">
+    <div className="flex flex-col items-center justify-center text-center p-4 min-h-[250px] animate-in fade-in duration-500">
         <CustomWalletModal open={isModalOpen} onOpenChange={setIsModalOpen} />
         {!account ? (
-            <Card className="bg-transparent border-none shadow-none">
+            <Card className="bg-transparent border-none shadow-none flex flex-col items-center">
                 <CardHeader>
-                    <CardTitle className="text-2xl text-white">Connect Your Sui Wallet</CardTitle>
-                    <CardDescription>Your gateway to the WheatChain ecosystem starts here.</CardDescription>
+                    <CardTitle className="text-2xl text-white font-headline">Connect Your Sui Wallet</CardTitle>
+                    <CardDescription className="text-base text-muted-foreground">Your gateway to the WheatChain ecosystem starts here.</CardDescription>
                 </CardHeader>
-                <Button onClick={() => setIsModalOpen(true)} size="lg" className="bg-amber-400 hover:bg-amber-500 text-black font-bold">
+                <Button 
+                    onClick={() => setIsModalOpen(true)}
+                    size="lg" 
+                    className="mt-4 w-64 bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-primary-foreground font-bold shadow-lg shadow-amber-500/30 transition-all hover:shadow-xl hover:shadow-amber-500/40 transform hover:-translate-y-1 text-lg px-8 py-6"
+                >
                     Connect Wallet
                 </Button>
             </Card>
         ) : (
              <div className="flex flex-col items-center gap-4 text-center animate-in fade-in duration-500">
                 <CheckCircle className="h-16 w-16 text-green-400" />
-                <h3 className="text-2xl font-bold text-white">Wallet Connected!</h3>
+                <h3 className="text-2xl font-bold text-white font-headline">Wallet Connected!</h3>
                 <p className="text-muted-foreground max-w-xs break-all">
                     {account.address}
                 </p>
