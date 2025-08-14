@@ -19,6 +19,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&family=Orbitron:wght@400;700;800;900&display=swap" rel="stylesheet" />
+        {/* Google reCAPTCHA Enterprise script */}
+        <script
+          src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          async
+          defer
+        ></script>
       </head>
       <body className="font-body antialiased">
         <SuiProvider>

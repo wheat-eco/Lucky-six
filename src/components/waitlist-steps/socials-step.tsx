@@ -68,7 +68,7 @@ export function SocialsStep({ onCompleted, setFormData }: SocialsStepProps) {
             {xStatus === 'verified' && <div className="flex items-center gap-2 text-sm text-green-400"><CheckCircle className="h-4 w-4" /> Done!</div>}
         </div>
         <div className="pl-8 space-y-2 pt-2">
-            <Label htmlFor="x-username" className="text-sm md:text-base">Your X Username</Label>
+            <Label htmlFor="x-username" className="text-sm md:text-base text-white">Your X Username</Label>
             <Input
                 id="x-username"
                 placeholder="@your_handle"

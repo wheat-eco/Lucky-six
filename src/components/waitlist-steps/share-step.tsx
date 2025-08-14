@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +9,16 @@ import ShareIcon from '@mui/icons-material/Share';
 import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useToast } from "@/hooks/use-toast";
-import { addToWaitlist, WaitlistData } from "@/lib/firestore";
+import { WaitlistData } from "@/lib/server/firestore"; // Import WaitlistData from the new server file
 import { useCurrentAccount } from "@mysten/dapp-kit";
+
+// Declare the grecaptcha variable
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
+
 
 interface ShareStepProps {
     onCompleted: () => void;
@@ -45,17 +53,37 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
           return;
       }
 
+      // Execute reCAPTCHA Enterprise
+      let recaptchaToken = null;
+      if (window.grecaptcha && window.grecaptcha.enterprise) {
+ try {
+          recaptchaToken = await window.grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'waitlist_join' });
+        } catch (e) {
+          console.error("reCAPTCHA execution failed:", e);
+          setError("Failed to verify reCAPTCHA. Please try again.");
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       setError('');
       setIsSubmitting(true);
-      
-      const waitlistData: WaitlistData = {
+
+      const waitlistData: WaitlistData & { recaptchaToken: string | null } = {
           suiAddress: account.address,
           xUsername,
           tweetUrl,
+          recaptchaToken,
       };
 
-      const result = await addToWaitlist(waitlistData);
+      // Call the new API route instead of the direct function
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(waitlistData),
+      });
 
+      const result = await res.json();
       if (result.success) {
           toast({
               title: "Post Submitted!",
@@ -64,7 +92,7 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
           });
           onCompleted();
       } else {
-          setError(result.error || "An unknown error occurred.");
+          setError(result.error ?? '');
       }
       setIsSubmitting(false);
   };
@@ -88,8 +116,8 @@ export function ShareStep({ onCompleted, xUsername }: ShareStepProps) {
             <Button type="button" onClick={handleShare} variant="outline" className="border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black">
                 <Share2 className="mr-2 h-4 w-4" />
                 <ShareIcon sx={{ mr: 1, fontSize: 16 }} /> Create Post
-            </Button>
-        </div>
+ </Button>
+ </div>
 
         <div className="pl-8 space-y-2">
             <Label htmlFor="tweet-url">Your Post URL</Label>

@@ -1,25 +1,22 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { getWaitlistCount } from '@/lib/firestore';
+import { db } from '@/lib/firebase'; // Import db from firebase
+import { collection, onSnapshot } from 'firebase/firestore'; // Import collection and onSnapshot
 import RocketLaunchOutlinedIcon from '@mui/icons-material/RocketLaunchOutlined';
 
 export function WaitlistCounter() {
   const [count, setCount] = useState(190000);
 
   useEffect(() => {
-    const fetchCount = async () => {
-      const initialCount = await getWaitlistCount();
-      setCount(initialCount);
-    };
-    fetchCount();
+    const waitlistCollection = collection(db, 'waitlist');
 
-    // Fake real-time updates for visual effect
-    const interval = setInterval(() => {
-      setCount(prevCount => prevCount + Math.floor(Math.random() * 3) + 1);
-    }, 5000);
-
-    return () => clearInterval(interval);
+    const unsubscribe = onSnapshot(waitlistCollection, (snapshot) => {
+      // Add the base number to the actual count
+      setCount(snapshot.size + 190000);
+    });
+    
+    return () => unsubscribe(); // Unsubscribe from real-time updates on component cleanup
   }, []);
   
   return (
